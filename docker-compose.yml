@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  # Postgres DB for trip service
+  db:
+    image: postgres:15
+    container_name: trip-service-db-1
+    environment:
+      POSTGRES_DB: tripdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - tripdb-data:/var/lib/postgresql/data
+      - ./data:/data    # keeps your CSV / seed files accessible inside container
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tripdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Trip service: your app
+  trip:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trip_service
+    environment:
+      # DB inside compose
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tripdb
+
+      # Real services running on your laptop (host). Change ports if your services use different host ports.
+      - RIDER_URL=http://host.docker.internal:3001
+      - DRIVER_URL=http://host.docker.internal:8000
+      - PAYMENT_URL=http://host.docker.internal:8082
+
+      - HTTP_TIMEOUT=8.0
+      - DRIVER_API_VERSION=v1
+
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+
+# Optional: keep stubs commented out — enable only for local stub testing
+#  driver_stub:
+#    image: tiangolo/uvicorn-gunicorn-fastapi:python3.11
+#    environment:
+#      MODULE_NAME: "app"
+#      VARIABLE_NAME: "app"
+#    volumes:
+#      - ./stubs/driver_stub:/app
+#    ports:
+#      - "8001:80"
+#
+#  rider_stub:
+#    image: tiangolo/uvicorn-gunicorn-fastapi:python3.11
+#    environment:
+#      MODULE_NAME: "app"
+#      VARIABLE_NAME: "app"
+#    volumes:
+#      - ./stubs/rider_stub:/app
+#    ports:
+#      - "8003:80"
+#
+#  payment_stub:
+#    image: tiangolo/uvicorn-gunicorn-fastapi:python3.11
+#    environment:
+#      MODULE_NAME: "app"
+#      VARIABLE_NAME: "app"
+#    volumes:
+#      - ./stubs/payment_stub:/app
+#    ports:
+#      - "8002:80"
+
+volumes:
+  tripdb-data:

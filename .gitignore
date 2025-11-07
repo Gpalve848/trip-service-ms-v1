@@ -1,0 +1,97 @@
+# ===========================================
+# Python
+# ===========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+*.log
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Python build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Cache & profiling
+.cache/
+.pytest_cache/
+.mypy_cache/
+coverage/
+htmlcov/
+
+# ===========================================
+# IDE / Editor
+# ===========================================
+.vscode/
+.idea/
+*.swp
+
+# ===========================================
+# OS generated files
+# ===========================================
+.DS_Store
+Thumbs.db
+
+# ===========================================
+# Environment & secrets
+# ===========================================
+.env
+.env.*
+*.secret
+*.key
+*.pem
+
+# ===========================================
+# Docker
+# ===========================================
+# Ignore local docker build artifacts
+docker_cache/
+*.tar
+
+# Exclude Docker local context caches
+**/.dockerignore
+
+# ===========================================
+# Kubernetes
+# ===========================================
+# Local k8s config files
+*.kubeconfig
+.kube/
+
+# ===========================================
+# Database Dumps & Migrations Output
+# ===========================================
+*.sql
+*.dump
+*.backup
+
+# ===========================================
+# Logs
+# ===========================================
+logs/
+*.log
+
+# ===========================================
+# Minikube / Kubernetes Files
+# ===========================================
+# Might be generated during testing
+minikube/
+helm-chart/values.local.yaml
+
+# ===========================================
+# CSVs / Data exports
+# ===========================================
+*.csv
+
+# ===========================================
+# Python bytecode in containers
+# ===========================================
+app/__pycache__/
