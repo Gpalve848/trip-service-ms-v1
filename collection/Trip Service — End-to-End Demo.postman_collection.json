@@ -1,0 +1,1135 @@
+{
+	"info": {
+		"_postman_id": "9e422aaf-6e28-4e34-b30d-94f17d013fcd",
+		"name": "Trip Service — End-to-End Demo",
+		"description": "Rider → Driver → Trip lifecycle: create, assign, accept, start, complete (with Payment).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37412238"
+	},
+	"item": [
+		{
+			"name": "01) Riders — List all",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let body;",
+							"try { body = pm.response.json(); } catch (e) { body = null; }",
+							"",
+							"let pickId = null;",
+							"// Try common shapes: array at root, {riders:[...]}, {data:[...]}, or first object with .id",
+							"if (Array.isArray(body) && body.length && (body[0].id || body[0]._id)) {",
+							"  pickId = body[0].id || body[0]._id;",
+							"} else if (body && Array.isArray(body.riders) && body.riders.length) {",
+							"  pickId = body.riders[0].id || body.riders[0]._id;",
+							"} else if (body && Array.isArray(body.data) && body.data.length) {",
+							"  pickId = body.data[0].id || body.data[0]._id;",
+							"}",
+							"",
+							"if (pickId) {",
+							"  pm.environment.set('rider_id', String(pickId));",
+							"  console.log('rider_id =>', pickId);",
+							"} else {",
+							"  console.warn('Could not auto-pick rider_id — set it manually in env.');",
+							"}",
+							"",
+							"// Optional: show first 3",
+							"if (Array.isArray(body)) {",
+							"  console.log('Riders sample:', body.slice(0,3));",
+							"} "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{RIDER_BASE}}/v1/riders",
+					"host": [
+						"{{RIDER_BASE}}"
+					],
+					"path": [
+						"v1",
+						"riders"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "01) Riders — List all",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{RIDER_BASE}}/v1/riders",
+							"host": [
+								"{{RIDER_BASE}}"
+							],
+							"path": [
+								"v1",
+								"riders"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4360"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1108-adWflZ2C8uyJMse5oU7J/RXedC4\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Nov 2025 19:00:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"count\": 23,\n    \"data\": [\n        {\n            \"_id\": \"69071cded55ed889c7aa59b0\",\n            \"name\": \"Rider23\",\n            \"email\": \"rider23713@mail.com\",\n            \"phone\": \"9924268793\",\n            \"createdAt\": \"2025-11-02T08:57:02.536Z\",\n            \"updatedAt\": \"2025-11-02T08:57:02.536Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598e\",\n            \"name\": \"Rider12\",\n            \"email\": \"rider12757@mail.com\",\n            \"phone\": \"9389760862\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598f\",\n            \"name\": \"Rider13\",\n            \"email\": \"rider13167@mail.com\",\n            \"phone\": \"9117770952\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5991\",\n            \"name\": \"Rider15\",\n            \"email\": \"rider15367@mail.com\",\n            \"phone\": \"9815373004\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5992\",\n            \"name\": \"Rider16\",\n            \"email\": \"rider162@mail.com\",\n            \"phone\": \"9465536469\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5993\",\n            \"name\": \"Rider17\",\n            \"email\": \"rider17344@mail.com\",\n            \"phone\": \"9257206053\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5994\",\n            \"name\": \"Rider18\",\n            \"email\": \"rider18384@mail.com\",\n            \"phone\": \"9955428234\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5995\",\n            \"name\": \"Rider19\",\n            \"email\": \"rider19905@mail.com\",\n            \"phone\": \"9035080522\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5996\",\n            \"name\": \"Rider20\",\n            \"email\": \"rider20772@mail.com\",\n            \"phone\": \"9939700348\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598d\",\n            \"name\": \"Rider11\",\n            \"email\": \"rider11694@mail.com\",\n            \"phone\": \"9054499200\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5997\",\n            \"name\": \"Rider21\",\n            \"email\": \"rider21847@mail.com\",\n            \"phone\": \"9023929350\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5990\",\n            \"name\": \"Rider14\",\n            \"email\": \"rider14992@mail.com\",\n            \"phone\": \"9785588627\",\n            \"createdAt\": \"2025-11-02T08:51:16.432Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.432Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5986\",\n            \"name\": \"Rider4\",\n            \"email\": \"rider4586@mail.com\",\n            \"phone\": \"9704336617\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5985\",\n            \"name\": \"Rider3\",\n            \"email\": \"rider3477@mail.com\",\n            \"phone\": \"9464111891\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5989\",\n            \"name\": \"Rider7\",\n            \"email\": \"rider7950@mail.com\",\n            \"phone\": \"9940744642\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598a\",\n            \"name\": \"Rider8\",\n            \"email\": \"rider8616@mail.com\",\n            \"phone\": \"9973362868\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598b\",\n            \"name\": \"Rider9\",\n            \"email\": \"rider9516@mail.com\",\n            \"phone\": \"9101407467\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa598c\",\n            \"name\": \"Rider10\",\n            \"email\": \"rider10165@mail.com\",\n            \"phone\": \"9043497595\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5988\",\n            \"name\": \"Rider6\",\n            \"email\": \"rider6742@mail.com\",\n            \"phone\": \"9622809394\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b84d55ed889c7aa5987\",\n            \"name\": \"Rider5\",\n            \"email\": \"rider5843@mail.com\",\n            \"phone\": \"9729017653\",\n            \"createdAt\": \"2025-11-02T08:51:16.431Z\",\n            \"updatedAt\": \"2025-11-02T08:51:16.431Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b4dd55ed889c7aa597f\",\n            \"name\": \"Rider2\",\n            \"email\": \"rider2360@mail.com\",\n            \"phone\": \"9481754688\",\n            \"createdAt\": \"2025-11-02T08:50:21.711Z\",\n            \"updatedAt\": \"2025-11-02T08:50:21.711Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69071b4dd55ed889c7aa597e\",\n            \"name\": \"Rider1\",\n            \"email\": \"rider1132@mail.com\",\n            \"phone\": \"9324268160\",\n            \"createdAt\": \"2025-11-02T08:50:21.709Z\",\n            \"updatedAt\": \"2025-11-02T08:50:21.709Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"690718f0837e95444370a9d0\",\n            \"name\": \"Rider81\",\n            \"email\": \"rider81@mail.com\",\n            \"phone\": \"9876543210\",\n            \"createdAt\": \"2025-11-02T08:40:16.459Z\",\n            \"updatedAt\": \"2025-11-02T08:40:16.459Z\",\n            \"__v\": 0\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "02) Drivers — List all",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let body;",
+							"try { body = pm.response.json(); } catch (e) { body = null; }",
+							"",
+							"let driverId = null;",
+							"// Driver service usually returns an array with { driver_id: <number>, ... }",
+							"if (Array.isArray(body) && body.length) {",
+							"  if (typeof body[0].driver_id !== 'undefined') driverId = body[0].driver_id;",
+							"}",
+							"",
+							"if (driverId !== null) {",
+							"  pm.environment.set('driver_id', String(driverId));",
+							"  console.log('driver_id =>', driverId);",
+							"} else {",
+							"  console.warn('Could not auto-pick driver_id — set it manually in env.');",
+							"}",
+							"",
+							"if (Array.isArray(body)) {",
+							"  console.log('Drivers sample:', body.slice(0,3));",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DRIVER_BASE}}/api/v1/drivers/",
+					"host": [
+						"{{DRIVER_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drivers",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "02) Drivers — List all",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DRIVER_BASE}}/api/v1/drivers/",
+							"host": [
+								"{{DRIVER_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 06 Nov 2025 19:01:01 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.11.14"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1313"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 10,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"driver_id\": 11,\n            \"name\": \"Amit Sharma\",\n            \"phone\": \"9123456789\",\n            \"vehicle_type\": \"Hatchback\",\n            \"vehicle_plate\": \"DL03CD9012\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 10,\n            \"name\": \"Vikram Patel\",\n            \"phone\": \"9876501234\",\n            \"vehicle_type\": \"SUV\",\n            \"vehicle_plate\": \"GJ05FG7890\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 9,\n            \"name\": \"Priya Singh\",\n            \"phone\": \"9988776655\",\n            \"vehicle_type\": \"Sedan\",\n            \"vehicle_plate\": \"MH04EF3456\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 8,\n            \"name\": \"Suresh Babu\",\n            \"phone\": \"9876543241\",\n            \"vehicle_type\": \"Auto\",\n            \"vehicle_plate\": \"KA02BC5678\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 7,\n            \"name\": \"Raj Kumar\",\n            \"phone\": \"9123456780\",\n            \"vehicle_type\": \"Bike\",\n            \"vehicle_plate\": \"KA01AB1234\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 5,\n            \"name\": \"John Doe Updated\",\n            \"phone\": \"9876543211\",\n            \"vehicle_type\": \"Hatchback\",\n            \"vehicle_plate\": \"ABC124\",\n            \"is_active\": false\n        },\n        {\n            \"driver_id\": 4,\n            \"name\": \"Driver3\",\n            \"phone\": \"9807180007\",\n            \"vehicle_type\": \"SUV\",\n            \"vehicle_plate\": \"KA95QQ7883\",\n            \"is_active\": false\n        },\n        {\n            \"driver_id\": 3,\n            \"name\": \"Driver2\",\n            \"phone\": \"9857811574\",\n            \"vehicle_type\": \"Hatchback\",\n            \"vehicle_plate\": \"KA13IT8615\",\n            \"is_active\": true\n        },\n        {\n            \"driver_id\": 2,\n            \"name\": \"Driver1\",\n            \"phone\": \"9743818976\",\n            \"vehicle_type\": \"Bike\",\n            \"vehicle_plate\": \"KA98DX4733\",\n            \"is_active\": false\n        },\n        {\n            \"driver_id\": 1,\n            \"name\": \"John Doe\",\n            \"phone\": \"9876543210\",\n            \"vehicle_type\": \"Sedan\",\n            \"vehicle_plate\": \"ABC123\",\n            \"is_active\": true\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "03) Trip — Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let b = pm.response.json();",
+							"if (b && b.id) {",
+							"  pm.environment.set('trip_id', b.id);",
+							"  console.log('trip_id =>', b.id);",
+							"} else {",
+							"  console.warn('Trip create: no id in response.');",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"rider_id\": \"691039c0878dcc6d736c7999\",\n  \"pickup_lat\": 22.97,\n  \"pickup_lng\": 77.59,\n  \"drop_lat\": 12.98,\n  \"drop_lng\": 77.60,\n  \"metadata\": {\"demo\": \"true\"}\n}"
+				},
+				"url": {
+					"raw": "{{TRIP_BASE}}/v1/trips",
+					"host": [
+						"{{TRIP_BASE}}"
+					],
+					"path": [
+						"v1",
+						"trips"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "03) Trip — Create",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rider_id\": \"{{rider_id}}\",\n  \"pickup_lat\": 12.97,\n  \"pickup_lng\": 77.59,\n  \"drop_lat\": 12.98,\n  \"drop_lng\": 77.60,\n  \"metadata\": {\"demo\": \"true\"}\n}"
+						},
+						"url": {
+							"raw": "{{TRIP_BASE}}/v1/trips",
+							"host": [
+								"{{TRIP_BASE}}"
+							],
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 06 Nov 2025 19:01:07 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "199"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"6a02a51f49554a2098b4c7570d2cf231\",\n    \"rider_id\": \"\",\n    \"status\": \"REQUESTED\",\n    \"requested_at\": \"2025-11-06T19:01:07.650328\",\n    \"correlation_id\": \"2534d29f32b3475d94ffad28229f1f7f\",\n    \"metadata\": {\n        \"demo\": \"true\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "04) Trip — Assign Driver",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"driver_id\":\"14\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/assign",
+					"host": [
+						"{{TRIP_BASE}}"
+					],
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"assign"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "04) Trip — Assign Driver",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"driver_id\":\"3\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/assign",
+							"host": [
+								"{{TRIP_BASE}}"
+							],
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"assign"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 06 Nov 2025 19:01:10 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "66"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"34975b0672c844e0a98fc77d7e9b553b\",\n    \"status\": \"ASSIGNED\"\n}"
+				}
+			]
+		},
+		{
+			"name": "05) Trip — Accept",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/accept",
+					"host": [
+						"{{TRIP_BASE}}"
+					],
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"accept"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "05) Trip — Accept",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/accept",
+							"host": [
+								"{{TRIP_BASE}}"
+							],
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"accept"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 06 Nov 2025 19:01:14 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "66"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"34975b0672c844e0a98fc77d7e9b553b\",\n    \"status\": \"ACCEPTED\"\n}"
+				}
+			]
+		},
+		{
+			"name": "06) Trip — Start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/start",
+					"host": [
+						"{{TRIP_BASE}}"
+					],
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"start"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "06) Trip — Start",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/start",
+							"host": [
+								"{{TRIP_BASE}}"
+							],
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"start"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 06 Nov 2025 19:01:18 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "65"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"34975b0672c844e0a98fc77d7e9b553b\",\n    \"status\": \"ONGOING\"\n}"
+				}
+			]
+		},
+		{
+			"name": "07) Trip — Complete (charges Payment)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/complete",
+					"host": [
+						"{{TRIP_BASE}}"
+					],
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"complete"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "07) Trip — Complete (charges Payment)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{TRIP_BASE}}/v1/trips/{{trip_id}}/complete",
+							"host": [
+								"{{TRIP_BASE}}"
+							],
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"complete"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 06 Nov 2025 19:01:21 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "282"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"34975b0672c844e0a98fc77d7e9b553b\",\n    \"status\": \"COMPLETED\",\n    \"fare\": 50,\n    \"payment\": {\n        \"ok\": true,\n        \"status\": 200,\n        \"body\": {\n            \"amount\": 50,\n            \"created_at\": \"2025-11-06T19:01:21.885797\",\n            \"method\": \"CARD\",\n            \"payment_id\": 369,\n            \"reference\": \"PAY-20251106-c067fd93\",\n            \"status\": \"SUCCESS\",\n            \"trip_id\": 1359\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "k8 create trip",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"rider_id\": \"690ec5c2983e53ca1b37f85f\",\r\n  \"pickup_lat\": 12.97,\r\n  \"pickup_lng\": 77.59,\r\n  \"drop_lat\": 12.98,\r\n  \"drop_lng\": 77.60,\r\n  \"metadata\": {\"demo\": \"true\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:18004/v1/trips",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "18004",
+					"path": [
+						"v1",
+						"trips"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "k8 cluster trip complete",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rider_id\": \"690ec5c2983e53ca1b37f85f\",\r\n  \"pickup_lat\": 12.97,\r\n  \"pickup_lng\": 77.59,\r\n  \"drop_lat\": 12.98,\r\n  \"drop_lng\": 77.60,\r\n  \"metadata\": {\"demo\": \"true\"}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:18004/v1/trips",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "18004",
+							"path": [
+								"v1",
+								"trips"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 08 Nov 2025 17:56:58 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "223"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"53f82d66eaf84a3aa08501b098003671\",\n    \"rider_id\": \"690ec5c2983e53ca1b37f85f\",\n    \"status\": \"REQUESTED\",\n    \"requested_at\": \"2025-11-08T17:56:58.918889\",\n    \"correlation_id\": \"baec716277ef46ccba357b75af10ba8d\",\n    \"metadata\": {\n        \"demo\": \"true\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "k8 Assign Driver",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"driver_id\":\"3\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/assign",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "18004",
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"assign"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "k8 Assign Driver",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"driver_id\":\"3\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/assign",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "18004",
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"assign"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 08 Nov 2025 17:57:11 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "66"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"53f82d66eaf84a3aa08501b098003671\",\n    \"status\": \"ASSIGNED\"\n}"
+				}
+			]
+		},
+		{
+			"name": "k8 Trip Accept",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/accept",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "18004",
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"accept"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "k8 Trip Accept",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/accept",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "18004",
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"accept"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 08 Nov 2025 17:58:03 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "66"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"53f82d66eaf84a3aa08501b098003671\",\n    \"status\": \"ACCEPTED\"\n}"
+				}
+			]
+		},
+		{
+			"name": "k8 Trip Start",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/start",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "18004",
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"start"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "k8 Trip Start",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/start",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "18004",
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"start"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 08 Nov 2025 17:58:12 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "65"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"53f82d66eaf84a3aa08501b098003671\",\n    \"status\": \"ONGOING\"\n}"
+				}
+			]
+		},
+		{
+			"name": "k8 Trip Complete",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/complete",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "18004",
+					"path": [
+						"v1",
+						"trips",
+						"{{trip_id}}",
+						"complete"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "k8 Trip Complete",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:18004/v1/trips/{{trip_id}}/complete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "18004",
+							"path": [
+								"v1",
+								"trips",
+								"{{trip_id}}",
+								"complete"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 08 Nov 2025 17:59:21 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "282"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"trip_id\": \"53f82d66eaf84a3aa08501b098003671\",\n    \"status\": \"COMPLETED\",\n    \"fare\": 50,\n    \"payment\": {\n        \"ok\": true,\n        \"status\": 200,\n        \"body\": {\n            \"amount\": 50,\n            \"created_at\": \"2025-11-08T17:59:22.954459\",\n            \"method\": \"CARD\",\n            \"payment_id\": 355,\n            \"reference\": \"PAY-20251108-ea2b26a8\",\n            \"status\": \"SUCCESS\",\n            \"trip_id\": 1004\n        }\n    }\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "RIDER_BASE",
+			"value": "http://127.0.0.1:3001"
+		},
+		{
+			"key": "DRIVER_BASE",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "TRIP_BASE",
+			"value": "http://127.0.0.1:8004"
+		},
+		{
+			"key": "rider_id",
+			"value": ""
+		},
+		{
+			"key": "driver_id",
+			"value": ""
+		},
+		{
+			"key": "trip_id",
+			"value": ""
+		}
+	]
+}
